@@ -6,18 +6,17 @@ const authorize = async (req, res, next) => {
   try {
     
     const token = req.header("Authorization").replace("Bearer ", "")
-    console.log("token",token)
+
     const decoded = await verifyJWT(token)
-    console.log("decoded",decoded)
+    
     const author = await AuthorSchema.findOne({
       _id: decoded._id,
     })
-    console.log("author",author)
+    console.log("author:",author)
 
     if (!author) {
       throw new Error()
     }
-console.log(req.author,req.token)
     req.token = token
     req.author = author
     next()

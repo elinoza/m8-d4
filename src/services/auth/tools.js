@@ -30,7 +30,7 @@ const generateJWT = payload =>
 const verifyJWT = token =>
   new Promise((res, rej) =>
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      console.log("decoded",decoded,process.env.JWT_SECRET)
+    
       if (err) rej(err)
       res(decoded)
     })

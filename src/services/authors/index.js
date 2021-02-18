@@ -25,7 +25,7 @@ authorsRouter.get(
   passport.authenticate("google"),
   async (req, res, next) => {
     try {
-      console.log("req:",req)
+    
       res.cookie("accessToken", req.user.tokens.accessToken, {
         httpOnly: true,
       })
@@ -103,19 +103,20 @@ authorsRouter.post("/login", async (req, res, next) => {
     const { email, password } = req.body
     const author= await AuthorSchema.findByCredentials(email, password)
     console.log(author)
-    const tokens = await authenticate(author)
+    const {accessToken} = await authenticate(author)
+    console.log(accessToken)
     // without cookies res.send(tokens)
     //  Send back tokens
      res.cookie("accessToken", accessToken, {
       httpOnly: true,
       path: "/",
     })
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      path: "/users/refreshToken",
-    })
+    // res.cookie("refreshToken", refreshToken, {
+    //   httpOnly: true,
+    //   path: "/users/refreshToken",
+    // })
 
-    res.send("Ok")
+    res.send(accessToken)
   } catch (error) {
     next(error)
   }
