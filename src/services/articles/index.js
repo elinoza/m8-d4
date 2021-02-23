@@ -9,7 +9,7 @@ const { authorize } = require("../auth/middleware")
 const articlesRouter = express.Router()
 
 
-articlesRouter.get("/",  async (req, res, next) => {
+articlesRouter.get("/", authorize, async (req, res, next) => {
   try {
     const query= q2m(req.query)
     const total = await articleSchema.countDocuments(query.criteria)
@@ -46,7 +46,7 @@ articlesRouter.get("/:id", async (req, res, next) => {
   }
 })
 
-articlesRouter.post("/", async (req, res, next) => {
+articlesRouter.post("/", authorize,async (req, res, next) => {
   try {
     const newarticle = new articleSchema(req.body)
     const { _id } = await newarticle.save()
